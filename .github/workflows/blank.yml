@@ -19,7 +19,7 @@ jobs:
         otp-version: 22.1
     - uses: gleam-lang/setup-gleam@v1.0.1
       with:
-        gleam-version: 0.8.0
+        gleam-version: 0.9.0
     - name: Clones gleam_contributors
       run: |
         git clone https://github.com/scripttease/gleam_contributors.git
