@@ -9,21 +9,43 @@ on:
     # * is a special character in YAML so you have to quote this string
     - cron:  '*/5 * * * *'
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  readme_edit:
-    # The type of runner that the job will run on
+  clone_contributors:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
+    - name: Clones gleam_contributors
+      run: |
+        git clone git@github.com:scripttease/gleam_contributors.git
+        cd gleam_contributors
 
-    # Runs a single command using the runners shell
+# jobs:
+  test_contributors:
+    needs: clone_contributors
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.0.0
+      - uses: gleam-lang/setup-erlang@v1.0.0
+        with:
+          otp-version: 22.1
+      - uses: gleam-lang/setup-gleam@v1.0.1
+        with:
+          gleam-version: 0.8.0
+      - run: cd gleam_contributors
+      - run: rebar3 install_deps
+      - run: rebar3 eunit
+      - run: gleam format --check src test
+      - run: rebar3 escriptize
+      - run: _build/default/bin/gleam_contributors GA $API_TOKEN
+# jobs:
+  readme_edit:
+    needs: [clone_contributors, test_contributors]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
     - name: Adds Hello World! to README
-      run: echo Hello, world! >> README.md
+      run: |
+        cd ..
+        echo Hello, world! >> README.md
 
     # Runs a set of commands using the runners shell
     - name: Commits and pushes updated README
