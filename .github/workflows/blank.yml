@@ -15,7 +15,7 @@ jobs:
     steps:
     - name: Clones gleam_contributors
       run: |
-        git clone git@github.com:scripttease/gleam_contributors.git
+        git clone https://github.com/scripttease/gleam_contributors.git
         cd gleam_contributors
 
 # jobs:
