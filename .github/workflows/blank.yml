@@ -32,7 +32,7 @@ jobs:
 
     - name: Adds Sponors to README
       run: |
-        gleam_contributors/_build/default/bin/gleam_contributors GA $API_TOKEN README.md 
+        gleam_contributors/_build/default/bin/gleam_contributors "GA" $API_TOKEN "README.md" 
 
     # Runs a set of commands using the runners shell
     - name: Commits and pushes updated README
