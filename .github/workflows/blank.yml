@@ -4,10 +4,11 @@ name: Sponsors List
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
-on: push
-  # schedule:
-    # * is a special character in YAML so you have to quote this string
-    # - cron:  '*/5 * * * *'
+# on: push
+on:
+  schedule:
+    * is a special character in YAML so you have to quote this string
+    - cron:  '*/5 * * * *'
 
 jobs:
   readme_edit:
@@ -29,9 +30,9 @@ jobs:
         gleam format --check src test
         rebar3 escriptize
 
-    - name: Adds Hello World! to README
+    - name: Adds Sponors to README
       run: |
-        gleam_contributors/_build/default/bin/gleam_contributors "GA" $API_TOKEN >> README.md 
+        gleam_contributors/_build/default/bin/gleam_contributors GA $API_TOKEN README.md 
 
     # Runs a set of commands using the runners shell
     - name: Commits and pushes updated README
